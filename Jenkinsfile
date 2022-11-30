@@ -44,7 +44,7 @@ node {
 
     stage('Trigger ManifestUpdate') {
                 echo "triggering k8s Deployment Manifest Update Job"
-                build job: 'k8s-app-deployment', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+                build job: 'k8s-polling-app-deployment', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
         }
 
     }
