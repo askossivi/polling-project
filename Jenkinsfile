@@ -15,13 +15,10 @@ node {
 
 // BUILD AND TEST SERVER  APP
     stage('Build image') {
-  
        pollingserverImage = docker.build("devtraining/polling-app-server", "./polling-app-server")
     }
 
     stage('Test image') {
-  
-
         pollingserverImage.inside {
             sh 'echo "Tests passed"'
         }
@@ -29,7 +26,6 @@ node {
 
 // BUIL AND TEST CLIENT APP
     stage('Build image') {
-  
        pollingclientImage = docker.build"devtraining/polling-app-client", "./polling-app-client")
     }
 
