@@ -44,12 +44,12 @@ node {
 //       }
       stage('Build client') {
         clientImage = docker.build("devtraining/client-app:v1.0.0", "./polling-app-client")
-      }
-      stage('Test image') {
-        clientImage.inside {
-          sh 'echo "Tests passed"'
-        }
-      }
+//       }
+//       stage('Test image') {
+//         clientImage.inside {
+//           sh 'echo "Tests passed"'
+//         }
+//       }
      
       stage('Push server image') {
           serverImage.push("${env.BUILD_NUMBER}")
