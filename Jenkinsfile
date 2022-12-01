@@ -7,45 +7,53 @@ node {
         checkout scm
       }
 
+    stage('Clone repository') {
+      
 
+        checkout scm
+    }
 
-      stage('Build polling app server image') {
-        pollingserverImage = docker.build("devtraining/polling-app-server", "./polling-app-server")
-      }
-      stage('Test polling app server image') {
+// BUILD AND TEST SERVER  APP
+    stage('Build image') {
+  
+       pollingserverImage = docker.build("devtraining/polling-app-server", "./polling-app-server")
+    }
+
+    stage('Test image') {
+  
+
         pollingserverImage.inside {
             sh 'echo "Tests passed"'
         }
-      }
+    }
 
+// BUIL AND TEST CLIENT APP
+    stage('Build image') {
+  
+       pollingclientImage = docker.build"devtraining/polling-app-client", "./polling-app-client")
+    }
 
+    stage('Test image') {
+  
 
-      stage('Build polling app client image') {
-        pollingclientImage = docker.build("devtraining/polling-app-client", "./polling-app-client")
-      }
-      stage('Test image') {
-        clientIpollingclientImagemage.inside {
+        pollingclientImage.inside {
             sh 'echo "Tests passed"'
         }
-      }
+    }
+
+// PUSH BUILT IMAGES
+    stage('Push server image') {
+        pollingserverImage.push("${env.BUILD_NUMBER}")
+    }
+    
+    
+    stage('Push client image') {
+        pollingclientImage.push("${env.BUILD_NUMBER}")
+    }
 
 
-
-      stage('Push polling app server image') {
-          pollingserverImage.push("${env.BUILD_NUMBER}")
-          // serverImage.push()
-        }
-      stage('Push polling app client image') {
-          pollingclientImage.push("${env.BUILD_NUMBER}")
-      }
-      
-
-
-
-      stage('Trigger ManifestUpdate') {
-                echo "triggering k8s Deployment Manifest Update Job"
+    stage('Trigger ManifestUpdate') {
+                echo "triggering k8s-polling-app-deploymentjob"
                 build job: 'k8s-polling-app-deployment', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
         }
-
-    }
 }
