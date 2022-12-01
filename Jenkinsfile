@@ -37,11 +37,11 @@ node {
       stage('Build server') {
         serverImage = docker.build("devtraining/server-app:v1.0.0", "./polling-app-server")
       }
-      stage('Test image') {
-        serverImage.inside {
-          sh 'echo "Tests passed"'
-        }
-      }
+//       stage('Test image') {
+//         serverImage.inside {
+//           sh 'echo "Tests passed"'
+//         }
+//       }
       stage('Build client') {
         clientImage = docker.build("devtraining/client-app:v1.0.0", "./polling-app-client")
       }
