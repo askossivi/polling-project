@@ -12,22 +12,22 @@ node {
       stage('Build polling app server image') {
         pollingserverImage = docker.build("devtraining/polling-app-server", "./polling-app-server")
       }
-    stage('Test polling app server image') {
-       pollingserverImage.inside {
+      stage('Test polling app server image') {
+        pollingserverImage.inside {
             sh 'echo "Tests passed"'
         }
-    }
+      }
 
 
 
       stage('Build polling app client image') {
         pollingclientImage = docker.build("devtraining/polling-app-client", "./polling-app-client")
       }
-    stage('Test image') {
+      stage('Test image') {
         clientIpollingclientImagemage.inside {
             sh 'echo "Tests passed"'
         }
-    }
+      }
 
 
 
@@ -42,7 +42,7 @@ node {
 
 
 
-    stage('Trigger ManifestUpdate') {
+      stage('Trigger ManifestUpdate') {
                 echo "triggering k8s Deployment Manifest Update Job"
                 build job: 'k8s-polling-app-deployment', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
         }
