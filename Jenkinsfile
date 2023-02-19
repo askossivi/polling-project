@@ -35,7 +35,7 @@ node {
         checkout scm
       }
       stage('Build server') {
-        serverImage = docker.build("devtraining/polling-app-server:"${env.BUILD_NUMBER}", "./polling-app-server")
+        serverImage = docker.build("devtraining/polling-app-server:v1.0.0", "./polling-app-server")
       }
 //       stage('Test image') {
 //         serverImage.inside {
@@ -43,7 +43,7 @@ node {
 //         }
 //       }
       stage('Build client') {
-        clientImage = docker.build("devtraining/polling-app-client:"${env.BUILD_NUMBER}", "./polling-app-client")
+        clientImage = docker.build("devtraining/polling-app-client:v1.0.0", "./polling-app-client")
       }
 //       stage('Test image') {
 //         clientImage.inside {
