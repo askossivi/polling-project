@@ -30,12 +30,12 @@
 node {
     def serverImage
     def clientImage
-    docker.withRegistry("https://index.docker.io/v1/", "Docker_Hub" ) {
+    docker.withRegistry("https://index.docker.io/v1/", "Docker_Hub_Jenkins" ) {
       stage('Clone repo') {
         checkout scm
       }
       stage('Build server') {
-        serverImage = docker.build("devtraining/server-app:v1.0.0", "./polling-app-server")
+        serverImage = docker.build("devtraining/polling-app-server:"${env.BUILD_NUMBER}", "./polling-app-server")
       }
 //       stage('Test image') {
 //         serverImage.inside {
@@ -43,7 +43,7 @@ node {
 //         }
 //       }
       stage('Build client') {
-        clientImage = docker.build("devtraining/client-app:v1.0.0", "./polling-app-client")
+        clientImage = docker.build("devtraining/polling-app-client:"${env.BUILD_NUMBER}", "./polling-app-client")
       }
 //       stage('Test image') {
 //         clientImage.inside {
