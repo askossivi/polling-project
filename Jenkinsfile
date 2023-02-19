@@ -34,6 +34,22 @@ node {
       stage('Clone repo') {
         checkout scm
       }
+        
+      steps{
+          script{
+          withSonarQubeEnv('sonarserver') { 
+          sh "mvn sonar:sonar -Dsonar.java.binaries=target/classes"
+           }
+          timeout(time: 1, unit: 'HOURS') {
+          def qg = waitForQualityGate()
+          if (qg.status != 'OK') {
+               error "Pipeline aborted due to quality gate failure: ${qg.status}"
+          }
+        }
+        }
+        }  
+      }
+        
       stage('Build server') {
         serverImage = docker.build("devtraining/polling-app-server:v1.0.0", "./polling-app-server")
       }
